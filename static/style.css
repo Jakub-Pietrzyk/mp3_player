@@ -1,0 +1,98 @@
+.album-covers{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 10vw;
+    height: 85vh;
+    border-right: 2px solid blue;
+    overflow: scroll;
+}
+
+.album-cover{
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.songs{
+    position: absolute;
+    top:0;
+    right:0;
+    width: 90vw;
+    height: 90vh;
+    padding-top: 50px;
+    overflow: scroll;
+}
+
+.song{
+  font-size: 25px;
+  text-align: center;
+  color: blue;
+  padding: 7px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.song:hover{
+  color: white;
+  background-color: blue;
+}
+
+.song.playing{
+  color: white;
+  background-color: blue;
+}
+
+.song:hover .span-play{
+  display: inline;
+}
+
+.song-span{
+  display: inline-block;
+  width: 30%;
+}
+
+.song-span.not-active{
+  color: grey;
+}
+
+.span-play{
+  width: 5%;
+  height: 100%;
+  background-color: grey;
+  display: none;
+}
+
+.console{
+    width: 100vw;
+    position: fixed;
+    bottom:0;
+    left:0;
+    background-color: blue;
+    height: 15vh;
+    text-align: center;
+}
+
+#play-big{
+  width: 8vw;
+  height: auto;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+}
+
+#next{
+  width: 8vw;
+  height: auto;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+}
+
+#undo{
+  width: 8vw;
+  height: auto;
+  position: relative;
+  top: 0;
+  cursor: pointer;
+}

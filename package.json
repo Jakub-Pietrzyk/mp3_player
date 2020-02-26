@@ -1,0 +1,15 @@
+{
+  "name": "lekcja_1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server01.js",
+  "dependencies": {},
+  "devDependencies": {
+    "tracer": ">0.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
