@@ -40,7 +40,7 @@
 
 .song.playing{
   color: white;
-  background-color: blue;
+  background-color: darkblue;
 }
 
 .song:hover .span-play{
@@ -70,29 +70,33 @@
     left:0;
     background-color: blue;
     height: 15vh;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 #play-big{
   width: 8vw;
   height: auto;
-  position: relative;
-  top: 0;
   cursor: pointer;
 }
 
 #next{
   width: 8vw;
   height: auto;
-  position: relative;
-  top: 0;
   cursor: pointer;
 }
 
 #undo{
   width: 8vw;
   height: auto;
-  position: relative;
-  top: 0;
   cursor: pointer;
+  margin-left: auto;
+}
+
+.time{
+  color: white;
+  display: inline-block;
+  margin-left: auto;
+  font-size: 5vh;
+  padding: 1vh;
 }

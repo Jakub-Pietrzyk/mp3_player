@@ -56,6 +56,8 @@ function servResponse(req, res) {
 var http = require("http");
 var fs = require("fs");
 var qs = require("querystring");
+var db = require(__dirname + "/db.js");
+
 var server = http.createServer(function (req, res) {
     console.log("Żądany adres to: " + req.url);
 

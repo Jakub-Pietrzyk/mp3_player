@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server01.js",
-  "dependencies": {},
+  "dependencies": {
+    "nedb": "^1.8.0"
+  },
   "devDependencies": {
     "tracer": ">0.0.0"
   },
