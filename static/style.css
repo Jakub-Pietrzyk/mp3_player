@@ -74,29 +74,37 @@
     justify-content: center;
 }
 
+.console-buttons{
+  position: fixed;
+  bottom: 5px;
+}
+
 #play-big{
-  width: 8vw;
+  width: 5vw;
   height: auto;
   cursor: pointer;
 }
 
 #next{
-  width: 8vw;
+  width: 5vw;
   height: auto;
   cursor: pointer;
 }
 
 #undo{
-  width: 8vw;
+  width: 5vw;
   height: auto;
   cursor: pointer;
-  margin-left: auto;
 }
 
 .time{
   color: white;
   display: inline-block;
   margin-left: auto;
-  font-size: 5vh;
+  font-size: 30px;
   padding: 1vh;
+}
+
+.time span{
+  font-size: 30px;
 }

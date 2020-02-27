@@ -15,7 +15,7 @@ class Ui {
     }
 
     changeDuration(){
-      var song_length = Math.round($("#audio").prop("duration"));     
+      var song_length = Math.round($("#audio").prop("duration"));
       var max_min = Math.floor(song_length/60);
       var max_sec = Math.floor(song_length%60);
       if(max_min < 10){
@@ -26,7 +26,7 @@ class Ui {
       }
       $("#song_length").html(max_min + ":" + max_sec);
 
-      var now_length = Math.round($("#audio").prop("currentTime"));     
+      var now_length = Math.round($("#audio").prop("currentTime"));
       var now_min = Math.floor(now_length/60);
       var now_sec = Math.floor(now_length%60);
       if(now_min < 10){
@@ -36,6 +36,13 @@ class Ui {
         now_sec = "0" + now_sec;
       }
       $("#current_time").html(now_min + ":" + now_sec);
+    }
+
+    changeSlider(){
+      var song_length = Math.round($("#audio").prop("duration"));
+      $("#music_progress").prop("max", song_length);
+      $("#music_progress").prop("min", 0);
+      $("#music_progress").val($("#audio").prop("currentTime"));
     }
 
     changeSmallPlay(file){
@@ -80,13 +87,15 @@ class Ui {
 
     song_clicks() {
       var instance = this;
-      $('#audio').on('canplay canplaythrough', function() 
-      {    
+      $('#audio').on('canplay canplaythrough', function()
+      {
         instance.changeDuration();
+        instance.changeSlider();
       });
 
       $("#audio").on("timeupdate", function () {
         instance.changeDuration();
+        instance.changeSlider();
       });
 
       $("#audio").on("ended", function () {
@@ -133,6 +142,10 @@ class Ui {
           document.querySelector("#audio").play();
         }
         instance.hoverActiveSong()
+      })
+
+      $("#music_progress").on("input",function(){
+        $("#audio").prop("currentTime",this.value)
       })
     }
 

@@ -10,6 +10,7 @@
     <script src="Ui.js"></script>
     <script src="Main.js"></script>
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/progress_bar.css">
 </head>
 <body>
     <div class="album-covers"></div>
@@ -18,9 +19,12 @@
         <audio id="audio">
             <source src="" id="audio_src" type="audio/mp3" />
         </audio>
-        <img id="undo" src="/undo.png">
-        <img id="play-big" class="play" src="/play.png">
-        <img id="next" src="/next.png">
+        <input type="range" min="0" max="100" id="music_progress"/>
+        <div class="console-buttons">
+          <img id="undo" src="/undo.png">
+          <img id="play-big" class="play" src="/play.png">
+          <img id="next" src="/next.png">
+        </div>
         <span class="time">
             <span id="current_time"></span>/<span id="song_length"></span>
         </span>

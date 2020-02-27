@@ -81,6 +81,12 @@ var server = http.createServer(function (req, res) {
                     res.write(data);
                     res.end();
                 })
+            } else if(req.url == "/progress_bar.css"){
+              fs.readFile("static/progress_bar.css", function (error, data) {
+                  res.writeHead(200, { 'Content-Type': 'text/css' });
+                  res.write(data);
+                  res.end();
+              })
             } else if (req.url == "/Net.js") {
                 fs.readFile("static/Net.js", function (error, data) {
                     res.writeHead(200, { 'Content-Type': 'application/javascript' });
