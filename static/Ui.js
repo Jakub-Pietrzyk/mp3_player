@@ -68,17 +68,17 @@ class Ui {
       var next_song;
         for(var i=0;i<net.songs.length;i++){
           if(net.song == net.songs[i][0] && i+1 < net.songs.length){
-            next_song = net.songs[i+1][0]
+            next_song = net.songs[i+1]
           } else if(net.song == net.songs[i][0] && i+1 >= net.songs.length){
-            next_song = net.songs[0][0]
+            next_song = net.songs[0]
           }
         }
-        net.song = next_song;
+        net.song = next_song[0];
         instance.clearSpanPlay();
         $(".play").prop("src", "/pause.png");
         instance.changeSmallPlay("/pause.png");
         instance.playing = true;
-        var path = "static/mp3/" + net.album + "/" + net.song;
+        var path = "static/mp3/" + next_song[3] + "/" + net.song;
         $("#audio").prop("src", path);
 
         document.querySelector("#audio").play();
@@ -107,8 +107,22 @@ class Ui {
         document.querySelector("#audio").pause();
         $(".play").prop("src", "/play.png");
         instance.clearSpanPlay();
-        net.changeSongs(this.id);
+        if(this.id == "playlist"){
+          net.getPlaylist();
+        } else {
+          net.changeSongs(this.id);
+        }
         instance.hoverActiveSong()
+      })
+
+      $(".song-playlist").on("click", function(e){
+        var song = net.songs[parseInt($(this).parent()[0].classList[1])]
+        var album = $(this).siblings(".album-info").html();
+        if($(e.target).html() == "+"){
+          net.addSongPlaylist(album, song[0], song[1], e.target)
+        } else if($(e.target).html() == "-") {
+          net.removeSongPlaylist(album, song[0], song[1], e.target)
+        }
       })
 
       $(".song-name").on("click", function(){
@@ -116,6 +130,7 @@ class Ui {
         var song_name = $(this).parent().children(".song-name").html()
         var path = "static/mp3/" + album_name + "/" + song_name;
         net.song = song_name;
+        net.album = album_name;
         $("#audio").prop("src", path);
         $(".play").prop("src", "/play.png");
         instance.clearSpanPlay();
@@ -175,18 +190,18 @@ class Ui {
         var next_song;
         for(var i=0;i<net.songs.length;i++){
           if(net.song == net.songs[i][0] && i-1 >= 0){
-            next_song = net.songs[i-1][0]
+            next_song = net.songs[i-1]
           } else if(net.song == net.songs[i][0] && i-1 < 0){
-            next_song = net.songs[net.songs.length-1][0]
+            next_song = net.songs[net.songs.length-1]
           }
         }
 
-        net.song = next_song;
+        net.song = next_song[0];
         instance.clearSpanPlay();
         $(".play").prop("src", "/pause.png");
         instance.changeSmallPlay("/pause.png");
         instance.playing = true;
-        var path = "static/mp3/" + net.album + "/" + net.song;
+        var path = "static/mp3/" + next_song[3] + "/" + net.song;
         $("#audio").prop("src", path);
 
         document.querySelector("#audio").play();

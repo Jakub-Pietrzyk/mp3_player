@@ -31,6 +31,7 @@
   padding: 7px;
   margin: 5px;
   cursor: pointer;
+  position: relative;
 }
 
 .song:hover{
@@ -44,12 +45,16 @@
 }
 
 .song:hover .span-play{
-  display: inline;
+  opacity: 1;
+}
+
+.song:hover .song-playlist{
+  opacity: 1;
 }
 
 .song-span{
   display: inline-block;
-  width: 30%;
+  width: 28%;
 }
 
 .song-span.not-active{
@@ -57,10 +62,15 @@
 }
 
 .span-play{
-  width: 5%;
-  height: 100%;
   background-color: grey;
-  display: none;
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 45px;
+  opacity: 0;
+  transition: opacity 0.15s, border-color 0.3s;
+  border: 2px solid transparent;
 }
 
 .console{
@@ -107,4 +117,39 @@
 
 .time span{
   font-size: 30px;
+}
+
+.song-playlist{
+  background-color: grey;
+  display: inline-block;
+  width: 45px;
+  height: 45px;
+  opacity: 0;
+  transition: opacity 0.15s, border-color 0.3s;
+  border: 2px solid transparent;
+  position: relative;
+  top: -23px;
+  right: -23px;
+}
+
+.song-playlist:hover, .span-play:hover{
+  border-color: white;
+}
+
+#playlist{
+  font-size: 20px;
+  background-color: grey;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  text-align: center;
+  font-weight: bold;
+  transition: border-color 0.3s;
+}
+
+#playlist:hover{
+  border-color: blue;
 }

@@ -1,3 +1,5 @@
+var db = require(__dirname + "/db.js");
+
 function servResponse(req, res) {
     var allData = "";
     req.on("data", function (data) {
@@ -26,12 +28,18 @@ function servResponse(req, res) {
                         return console.log(err);
                     }
 
-                    files.forEach(function (fileName) {
-                        var stats = fs.statSync(__dirname + "/static/mp3/" + album + "/" + fileName);
-                        var fileSizeInBytes = stats["size"] / 1000000.0;
-                        send_data.files.push([fileName, Math.round(fileSizeInBytes * 100) / 100]);
+                    db.getAll().then(function(docs) {
+                      songs_in_db = docs.map(function(x) {return x.song});
+
+                      files.forEach(function (fileName) {
+                          var stats = fs.statSync(__dirname + "/static/mp3/" + album + "/" + fileName);
+                          var fileSizeInBytes = stats["size"] / 1000000.0;
+                          var in_db = songs_in_db.includes(fileName);
+                          send_data.files.push([fileName, Math.round(fileSizeInBytes * 100) / 100, in_db, album]);
+                      });
+                      res.end("" + JSON.stringify(send_data), null, 4);
                     });
-                    res.end("" + JSON.stringify(send_data), null, 4);
+
 
                 })
             });
@@ -41,14 +49,34 @@ function servResponse(req, res) {
                     return console.log(err);
                 }
 
-                files.forEach(function (fileName) {
-                    var stats = fs.statSync(__dirname + "/static/mp3/" + finish["id"] + "/" + fileName);
-                    var fileSizeInBytes = stats["size"] / 1000000.0;
-                    send_data.files.push([fileName, Math.round(fileSizeInBytes * 100) / 100]);
+
+
+                db.getAll().then(function(docs) {
+                  songs_in_db = docs.map(function(x) {return x.song});
+
+                  files.forEach(function (fileName) {
+                      var stats = fs.statSync(__dirname + "/static/mp3/" + finish["id"] + "/" + fileName);
+                      var fileSizeInBytes = stats["size"] / 1000000.0;
+                      var in_db = songs_in_db.includes(fileName);
+                      send_data.files.push([fileName, Math.round(fileSizeInBytes * 100) / 100, in_db, finish["id"]]);
+                  });
+                  res.end("" + JSON.stringify(send_data), null, 4);
                 });
-                res.end("" + JSON.stringify(send_data), null, 4);
 
             })
+        } else if(finish["action"] == "ADD") {
+          db.addSong(finish["album"], finish["song"], finish["weight"]);
+          res.end(finish["album"], null, 4);
+        } else if(finish["action"] == "DEL") {
+          db.delSong(finish["album"], finish["song"], finish["weight"]);
+          res.end(finish["album"], null, 4);
+        } else if(finish["action"] == "PLAYLIST"){
+          db.getAll().then(function(docs) {
+            for(var i=0;i<docs.length;i++){
+              send_data.files.push([docs[i].song, docs[i].weight, true, docs[i].album]);
+            }
+            res.end("" + JSON.stringify(send_data), null, 4);
+          });
         }
     })
 }
@@ -56,14 +84,15 @@ function servResponse(req, res) {
 var http = require("http");
 var fs = require("fs");
 var qs = require("querystring");
-var db = require(__dirname + "/db.js");
 
 var server = http.createServer(function (req, res) {
-    console.log("Żądany adres to: " + req.url);
+    // console.log("Żądany adres to: " + req.url);
+
 
     switch (req.method) {
         case "GET":
             if (req.url == "/") {
+              db.printSongs()
                 fs.readFile("static/index.html", function (error, data) {
                     res.writeHead(200, { 'Content-Type': 'text/html' });
                     res.write(data);
