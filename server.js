@@ -83,10 +83,11 @@ function servResponse(req, res) {
 
 var http = require("http");
 var fs = require("fs");
+var formidable = require('formidable');
 var qs = require("querystring");
 
 var server = http.createServer(function (req, res) {
-    // console.log("Żądany adres to: " + req.url);
+    console.log("Żądany adres to: ("+req.method+") " + req.url);
 
 
     switch (req.method) {
@@ -98,39 +99,15 @@ var server = http.createServer(function (req, res) {
                     res.write(data);
                     res.end();
                 })
-            } else if (req.url == "/jq.js") {
-                fs.readFile("static/jq.js", function (error, data) {
+            } else if(req.url.indexOf(".js") != -1){
+                fs.readFile("static" + decodeURI(req.url), function (error, data) {
                     res.writeHead(200, { 'Content-Type': 'application/javascript' });
                     res.write(data);
                     res.end();
                 })
-            } else if (req.url == "/style.css") {
-                fs.readFile("static/style.css", function (error, data) {
-                    res.writeHead(200, { 'Content-Type': 'text/css' });
-                    res.write(data);
-                    res.end();
-                })
-            } else if(req.url == "/progress_bar.css"){
-              fs.readFile("static/progress_bar.css", function (error, data) {
-                  res.writeHead(200, { 'Content-Type': 'text/css' });
-                  res.write(data);
-                  res.end();
-              })
-            } else if (req.url == "/Net.js") {
-                fs.readFile("static/Net.js", function (error, data) {
-                    res.writeHead(200, { 'Content-Type': 'application/javascript' });
-                    res.write(data);
-                    res.end();
-                })
-            } else if (req.url == "/Ui.js") {
-                fs.readFile("static/Ui.js", function (error, data) {
-                    res.writeHead(200, { 'Content-Type': 'application/javascript' });
-                    res.write(data);
-                    res.end();
-                })
-            } else if (req.url == "/Main.js") {
-                fs.readFile("static/Main.js", function (error, data) {
-                    res.writeHead(200, { 'Content-Type': 'application/javascript' });
+            } else if(req.url.indexOf(".css") != -1){
+                fs.readFile("static" + decodeURI(req.url), function (error, data) {
+                    res.writeHead(200, { "Content-type": "text/css" });
                     res.write(data);
                     res.end();
                 })
@@ -152,11 +129,42 @@ var server = http.createServer(function (req, res) {
                     res.write(data);
                     res.end();
                 })
+            } else if(req.url == "/admin"){
+                fs.readFile("static/admin.html", function (error, data) {
+                    res.writeHead(200, { 'Content-Type': 'text/html' });
+                    res.write(data);
+                    res.end();
+                })
             }
             break;
         case "POST":
             if (req.url == "/") {
                 servResponse(req, res)
+            } else if(req.url == "/upload"){
+                var form = new formidable.IncomingForm();
+
+                form.parse(req, function (err, fields, files) {
+
+                });
+
+                form.on('fileBegin', (name, file) => {
+                  var splited_name = file.name.split("|");
+                  var album = splited_name[splited_name.length-1];
+                  var dir = './static/mp3/'+album;
+
+                  if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir);
+                  }
+                  splited_name.pop();
+                  var file_name = splited_name.join("");
+
+                  if(file.type == "audio/mpeg"){
+                    file.path = __dirname + '/static/mp3/'+ album + "/" + file_name;
+                  } else {
+                    var extension = file_name.split(".")[file_name.split(".").length -1]
+                    file.path = __dirname + '/static/mp3/covers/' + album + "." + extension
+                  }
+                })
             }
             break;
 

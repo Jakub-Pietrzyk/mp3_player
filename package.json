@@ -4,6 +4,8 @@
   "description": "",
   "main": "server01.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "formidable": "^1.2.2",
     "nedb": "^1.8.0"
   },
   "devDependencies": {

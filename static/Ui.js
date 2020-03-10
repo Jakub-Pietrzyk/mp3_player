@@ -4,6 +4,7 @@ class Ui {
     constructor() {
         console.log("konstruktor klasy Ui")
         this.playing = false;
+        this.adminClicks();
     }
 
     //obsługa kliknięć w Ui
@@ -209,4 +210,76 @@ class Ui {
       })
     }
 
+    adminClicks(){
+      var files = [];
+      $("html").on("dragover", function (e) {
+        $(".upload-div").html("Tutaj");
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $("html").on("dragleave", function (e) {
+      $(".upload-div").html("PRZECIĄGNIJ PLIKI TUTAJ");
+      e.preventDefault();
+      e.stopPropagation();
+  });
+
+    $("html").on("drop", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $('.upload-div').on('dragenter', function (e) {
+      $(e.target).html("UPLOAD");
+      e.stopPropagation();
+      e.preventDefault();
+  });
+
+  $('.upload-div').on('dragover', function (e) {
+    $(e.target).html("UPLOAD");
+      e.stopPropagation();
+      e.preventDefault();
+  });
+
+
+  $('.upload-div').on('dragleave', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+  });
+
+  $('.upload-div').on('drop', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    files = e.originalEvent.dataTransfer.files;
+    var album = prompt("Podaj nazwę albumu(nie używaj znaku '|')");
+    if(album == ""){
+      var r = Math.random().toString(36).substring(7);
+      album = "random_name_" + r;
+    }
+    album = album.split(" ")
+    album = album.join("_")
+
+    var fd = new FormData();
+    fd.append("album", album);
+    for(var i=0;i<files.length;i++){
+      var blob = files[i].slice(0, files[i].size, files[i].type);
+      var newFile = new File([blob], files[i].name + "|" + album, {type: files[i].type});
+      fd.append(i,newFile)
+    }
+    $.ajax({
+      url: '/upload',
+      type: 'POST',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+          console.log(response)
+      },
+
+    });
+
+
+    })
+  }
 }
